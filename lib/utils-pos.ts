@@ -1,8 +1,7 @@
-// Currency formatter
-const CURRENCY_FORMATTER = new Intl.NumberFormat('en-LK', {
+// Currency formatter (US Dollar)
+const CURRENCY_FORMATTER = new Intl.NumberFormat('en-US', {
   style: 'currency',
-  currency: 'LKR',
-  currencyDisplay: 'narrowSymbol',
+  currency: 'USD',
   minimumFractionDigits: 2,
   maximumFractionDigits: 2,
 });
