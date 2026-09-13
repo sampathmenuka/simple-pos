@@ -10,21 +10,6 @@ const apiClient: AxiosInstance = axios.create({
     },
 })
 
-// Request interceptor
-apiClient.interceptors.request.use(
-    (config: InternalAxiosRequestConfig) => {
-        // Add auth token if available
-        const token = localStorage.getItem('auth_token')
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`
-        }
-        return config
-    },
-    (error) => {
-        return Promise.reject(error)
-    }
-)
-
 // Response interceptor
 apiClient.interceptors.response.use(
     (response) => {
@@ -33,8 +18,8 @@ apiClient.interceptors.response.use(
     (error: AxiosError) => {
         // Handle global errors
         if (error.response?.status === 401) {
-            // Unauthorized - clear token and redirect
-            localStorage.removeItem('auth_token')
+            // Unauthorized - clear user and redirect
+            localStorage.removeItem('pos_user')
             window.location.href = '/login'
             toast.error('Session expired. Please login again.')
         } else if (error.response?.status === 403) {

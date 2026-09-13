@@ -81,10 +81,6 @@ export function useCartStore() {
     addItem: (item: CartItem) => {
       const existing = cartState.items.find(i => i.id === item.id);
       if (existing) {
-        if (existing.quantity + item.quantity > (item as any).maxStock) {
-          toast.warning('Not enough stock available');
-          return;
-        }
         existing.quantity += item.quantity;
       } else {
         cartState.items.push(item);
@@ -96,9 +92,14 @@ export function useCartStore() {
       notifyListeners();
     },
     updateQuantity: (id: string, quantity: number) => {
+      if (quantity <= 0) {
+        cartState.items = cartState.items.filter(i => i.id !== id);
+        notifyListeners();
+        return;
+      }
       const item = cartState.items.find(i => i.id === id);
       if (item) {
-        item.quantity = Math.max(1, quantity);
+        item.quantity = quantity;
         notifyListeners();
       }
     },
