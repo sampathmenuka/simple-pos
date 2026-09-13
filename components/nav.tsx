@@ -27,8 +27,10 @@ export function Navigation() {
   const { resolvedTheme, setTheme } = useTheme();
   const { mutate: logout } = useLogout();
   const [userName, setUserName] = useState("Admin");
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     try {
       const stored = localStorage.getItem("pos_user");
       if (stored) {
@@ -72,7 +74,7 @@ export function Navigation() {
             <Menu className="w-5 h-5" />
           </Button>
 
-          <Link href="/pos" className="flex items-center gap-2.5 group">
+          <Link href="/" className="flex items-center gap-2.5 group">
             <div className="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-xs shadow-blue-500/30 group-hover:scale-105 transition-transform">
               <ShoppingBag className="w-5 h-5" />
             </div>
@@ -118,17 +120,21 @@ export function Navigation() {
             title="Toggle theme"
             className="rounded-xl h-9 w-9 p-0 text-muted-foreground hover:text-foreground"
           >
-            <span suppressHydrationWarning>
-              {resolvedTheme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-            </span>
+            {mounted ? (
+              resolvedTheme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />
+            ) : (
+              <span className="w-4 h-4 block" />
+            )}
           </Button>
 
           {/* User Badge */}
           <div className="hidden sm:flex items-center gap-2 px-2.5 py-1 rounded-xl bg-slate-100/70 dark:bg-zinc-900 border border-border/60">
             <div className="w-6 h-6 rounded-full bg-blue-600/15 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xs font-bold uppercase">
-              {userName.charAt(0) || 'A'}
+              {mounted ? (userName.charAt(0) || 'A') : 'A'}
             </div>
-            <span className="text-xs font-semibold text-foreground truncate max-w-[120px]">{userName}</span>
+            <span className="text-xs font-semibold text-foreground truncate max-w-[120px]">
+              {mounted ? userName : 'Admin'}
+            </span>
           </div>
 
           {/* Logout Button */}
