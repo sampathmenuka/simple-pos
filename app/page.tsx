@@ -72,11 +72,8 @@ export default function Dashboard() {
           
           {/* Tile 1: Total Revenue */}
           <div className="rounded-3xl p-6 bg-card border border-border hover:border-blue-500/60 shadow-xs hover:shadow-md transition-all flex flex-col justify-between">
-            <div className="flex items-center justify-between mb-4">
+            <div className="mb-4">
               <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Total Revenue</span>
-              <div className="w-11 h-11 rounded-2xl bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 flex items-center justify-center">
-                <DollarSign className="w-5 h-5" />
-              </div>
             </div>
 
             <div className="space-y-1">
@@ -91,11 +88,8 @@ export default function Dashboard() {
 
           {/* Tile 2: Total Orders */}
           <div className="rounded-3xl p-6 bg-card border border-border hover:border-emerald-500/60 shadow-xs hover:shadow-md transition-all flex flex-col justify-between">
-            <div className="flex items-center justify-between mb-4">
+            <div className="mb-4">
               <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Total Orders</span>
-              <div className="w-11 h-11 rounded-2xl bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
-                <ShoppingCart className="w-5 h-5" />
-              </div>
             </div>
 
             <div className="space-y-1">
@@ -110,11 +104,8 @@ export default function Dashboard() {
 
           {/* Tile 3: Avg Order Value */}
           <div className="rounded-3xl p-6 bg-card border border-border hover:border-purple-500/60 shadow-xs hover:shadow-md transition-all flex flex-col justify-between">
-            <div className="flex items-center justify-between mb-4">
+            <div className="mb-4">
               <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Avg Basket Value</span>
-              <div className="w-11 h-11 rounded-2xl bg-purple-50 dark:bg-purple-950 text-purple-600 dark:text-purple-400 flex items-center justify-center">
-                <TrendingUp className="w-5 h-5" />
-              </div>
             </div>
 
             <div className="space-y-1">
@@ -129,11 +120,8 @@ export default function Dashboard() {
 
           {/* Tile 4: Inventory Alerts */}
           <div className="rounded-3xl p-6 bg-card border border-border hover:border-amber-500/60 shadow-xs hover:shadow-md transition-all flex flex-col justify-between">
-            <div className="flex items-center justify-between mb-4">
+            <div className="mb-4">
               <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Low Stock Alert</span>
-              <div className="w-11 h-11 rounded-2xl bg-amber-50 dark:bg-amber-950 text-amber-600 dark:text-amber-400 flex items-center justify-center">
-                <AlertTriangle className="w-5 h-5" />
-              </div>
             </div>
 
             <div className="space-y-1">
