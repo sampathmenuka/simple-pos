@@ -32,80 +32,32 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 
-// Helper to assign thematic icons & gradients for US Supermarket Departments
+// Helper to assign thematic icons for US Supermarket Departments with unified styling
 function getCategoryVisual(categoryName: string) {
   const name = (categoryName || '').toLowerCase();
-  
-  // Produce / Fruits / Vegetables
+  let icon = Package;
+
   if (name.includes('produce') || name.includes('fruit') || name.includes('vegetable')) {
-    return {
-      icon: Apple,
-      bgGradient: 'from-emerald-500/15 via-green-500/10 to-transparent',
-      accentColor: 'text-emerald-600 dark:text-emerald-400',
-      badgeBg: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300',
-    };
-  }
-  // Dairy & Eggs
-  if (name.includes('dairy') || name.includes('egg') || name.includes('milk') || name.includes('cheese')) {
-    return {
-      icon: Milk,
-      bgGradient: 'from-sky-500/15 via-blue-500/10 to-transparent',
-      accentColor: 'text-sky-600 dark:text-sky-400',
-      badgeBg: 'bg-sky-100 text-sky-800 dark:bg-sky-950/80 dark:text-sky-300',
-    };
-  }
-  // Bakery & Bread
-  if (name.includes('bakery') || name.includes('bread') || name.includes('pastry')) {
-    return {
-      icon: Wheat,
-      bgGradient: 'from-amber-500/15 via-orange-500/10 to-transparent',
-      accentColor: 'text-amber-600 dark:text-amber-400',
-      badgeBg: 'bg-amber-100 text-amber-800 dark:bg-amber-950/80 dark:text-amber-300',
-    };
-  }
-  // Meat & Seafood
-  if (name.includes('meat') || name.includes('seafood') || name.includes('beef') || name.includes('chicken') || name.includes('fish')) {
-    return {
-      icon: Beef,
-      bgGradient: 'from-rose-500/15 via-red-500/10 to-transparent',
-      accentColor: 'text-rose-600 dark:text-rose-400',
-      badgeBg: 'bg-rose-100 text-rose-800 dark:bg-rose-950/80 dark:text-rose-300',
-    };
-  }
-  // Beverages / Drinks
-  if (name.includes('beverage') || name.includes('drink') || name.includes('juice') || name.includes('soda') || name.includes('coffee')) {
-    return {
-      icon: CupSoda,
-      bgGradient: 'from-cyan-500/15 via-teal-500/10 to-transparent',
-      accentColor: 'text-cyan-600 dark:text-cyan-400',
-      badgeBg: 'bg-cyan-100 text-cyan-800 dark:bg-cyan-950/80 dark:text-cyan-300',
-    };
-  }
-  // Snacks & Pantry
-  if (name.includes('snack') || name.includes('pantry') || name.includes('cookie') || name.includes('chip')) {
-    return {
-      icon: Cookie,
-      bgGradient: 'from-purple-500/15 via-violet-500/10 to-transparent',
-      accentColor: 'text-purple-600 dark:text-purple-400',
-      badgeBg: 'bg-purple-100 text-purple-800 dark:bg-purple-950/80 dark:text-purple-300',
-    };
-  }
-  // Frozen Foods
-  if (name.includes('frozen') || name.includes('ice cream')) {
-    return {
-      icon: IceCream,
-      bgGradient: 'from-indigo-500/15 via-blue-500/10 to-transparent',
-      accentColor: 'text-indigo-600 dark:text-indigo-400',
-      badgeBg: 'bg-indigo-100 text-indigo-800 dark:bg-indigo-950/80 dark:text-indigo-300',
-    };
+    icon = Apple;
+  } else if (name.includes('dairy') || name.includes('egg') || name.includes('milk') || name.includes('cheese')) {
+    icon = Milk;
+  } else if (name.includes('bakery') || name.includes('bread') || name.includes('pastry')) {
+    icon = Wheat;
+  } else if (name.includes('meat') || name.includes('seafood') || name.includes('beef') || name.includes('chicken') || name.includes('fish')) {
+    icon = Beef;
+  } else if (name.includes('beverage') || name.includes('drink') || name.includes('juice') || name.includes('soda') || name.includes('coffee')) {
+    icon = CupSoda;
+  } else if (name.includes('snack') || name.includes('pantry') || name.includes('cookie') || name.includes('chip')) {
+    icon = Cookie;
+  } else if (name.includes('frozen') || name.includes('ice cream')) {
+    icon = IceCream;
   }
 
-  // Fallback
   return {
-    icon: Package,
-    bgGradient: 'from-slate-500/15 via-zinc-500/10 to-transparent',
-    accentColor: 'text-slate-600 dark:text-slate-400',
-    badgeBg: 'bg-slate-100 text-slate-800 dark:bg-slate-900 dark:text-slate-300',
+    icon,
+    bgColor: 'bg-muted/60',
+    accentColor: 'text-primary',
+    badgeBg: 'bg-muted text-foreground border-border',
   };
 }
 
@@ -407,14 +359,14 @@ export default function POSPage() {
                       isOutOfStock ? 'opacity-55 cursor-not-allowed' : ''
                     }`}
                   >
-                    {/* Top Illustration/Gradient Area */}
+                    {/* Top Illustration Area */}
                     <div
-                      className={`relative h-28 bg-gradient-to-br ${visual.bgGradient} p-3 flex flex-col justify-between`}
+                      className="relative h-28 bg-muted/40 border-b border-border p-3 flex flex-col justify-between"
                     >
                       <div className="flex items-center justify-between">
                         <Badge
                           variant="outline"
-                          className={`${visual.badgeBg} border-none font-medium text-[10px] px-2 py-0.5 rounded-full`}
+                          className={`${visual.badgeBg} font-medium text-[10px] px-2 py-0.5 rounded-full`}
                         >
                           {product.category}
                         </Badge>
