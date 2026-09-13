@@ -51,8 +51,8 @@ export interface OrderItem {
 
 export interface Order {
   id: number;
-  customer_id?: number;
-  customer_name?: string;
+  customer_id?: number | null;
+  customer_name?: string | null;
   total_amount: number;
   discount_amount: number;
   status: string;
@@ -63,8 +63,8 @@ export interface Order {
 export interface Customer {
   id: number;
   name: string;
-  email: string;
-  phone: string;
+  email: string | null;
+  phone: string | null;
   created_at: string;
   active: boolean;
 }

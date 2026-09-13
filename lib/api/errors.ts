@@ -12,8 +12,9 @@ export interface ApiError {
  */
 export const normalizeError = (error: unknown): ApiError => {
     if (error instanceof AxiosError) {
+        const serverMessage = error.response?.data?.error || error.response?.data?.message
         return {
-            message: error.response?.data?.message || error.message || 'An error occurred',
+            message: serverMessage || error.message || 'An error occurred',
             status: error.response?.status,
             code: error.code,
             details: error.response?.data,
@@ -37,6 +38,10 @@ export const normalizeError = (error: unknown): ApiError => {
  */
 export const getErrorMessage = (error: unknown): string => {
     const apiError = normalizeError(error)
+
+    if (apiError.message && apiError.message !== 'An error occurred') {
+        return apiError.message
+    }
 
     const statusMessages: { [key: number]: string } = {
         400: 'Bad request. Please check your input.',

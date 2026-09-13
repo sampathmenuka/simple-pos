@@ -25,6 +25,8 @@ export const useCreateOrder = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ORDERS_KEY })
+            queryClient.invalidateQueries({ queryKey: ['products'] })
+            queryClient.invalidateQueries({ queryKey: ['dashboard'] })
         },
         onError: (error) => toast.error(getErrorMessage(error))
     })

@@ -23,13 +23,21 @@ import { useLogout } from "@/lib/api/hooks";
 
 export function Navigation() {
   const pathname = usePathname() || "";
-  const [mounted, setMounted] = useState(false);
   const { sidebarOpen, setSidebarOpen } = useUIStore();
-  const { theme, setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
   const { mutate: logout } = useLogout();
+  const [userName, setUserName] = useState("Admin");
 
   useEffect(() => {
-    setMounted(true);
+    try {
+      const stored = localStorage.getItem("pos_user");
+      if (stored) {
+        const user = JSON.parse(stored);
+        if (user?.name) setUserName(user.name);
+      }
+    } catch {
+      // ignore parse errors
+    }
   }, []);
 
   const handleLogout = () => {
@@ -39,7 +47,6 @@ export function Navigation() {
     logout();
   };
 
-  if (!mounted) return null;
   if (pathname === "/login" || pathname === "/(auth)/login") return null;
 
   const navItems = [
@@ -107,19 +114,21 @@ export function Navigation() {
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
             title="Toggle theme"
             className="rounded-xl h-9 w-9 p-0 text-muted-foreground hover:text-foreground"
           >
-            {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            <span suppressHydrationWarning>
+              {resolvedTheme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            </span>
           </Button>
 
           {/* User Badge */}
           <div className="hidden sm:flex items-center gap-2 px-2.5 py-1 rounded-xl bg-slate-100/70 dark:bg-zinc-900 border border-border/60">
-            <div className="w-6 h-6 rounded-full bg-blue-600/15 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xs font-bold">
-              A
+            <div className="w-6 h-6 rounded-full bg-blue-600/15 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xs font-bold uppercase">
+              {userName.charAt(0) || 'A'}
             </div>
-            <span className="text-xs font-semibold text-foreground">Admin</span>
+            <span className="text-xs font-semibold text-foreground truncate max-w-[120px]">{userName}</span>
           </div>
 
           {/* Logout Button */}
