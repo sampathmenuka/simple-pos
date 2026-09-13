@@ -1,51 +1,13 @@
 import { prisma } from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
+import type { Category, Product, Customer, Order, OrderItem } from '@/lib/utils-pos';
+export type { Category, Product, Customer, Order, OrderItem };
 
-// Simplified types
-export interface Category {
-  id: string;
-  name: string;
-  created_at: string;
-  active: boolean;
-}
-
-export interface Product {
-  id: string;
-  name: string;
-  price: number;
-  category: string;
-  stock: number;
-  category_id: string;
-  description: string | null;
-  active: boolean;
-}
-
-export interface Customer {
-  id: number;
-  name: string;
-  email: string | null;
-  phone: string | null;
-  created_at: string;
-  active: boolean;
-}
-
-export interface Order {
-  id: number;
-  customer_id?: number | null;
-  customer_name?: string;
-  total_amount: number;
-  discount_amount: number;
-  status: string;
-  created_at?: string;
-  items?: OrderItem[];
-}
-
-export interface OrderItem {
-  id: number;
-  product_id: string;
-  product_name: string;
-  quantity: number;
-  unit_price: number;
+export class OrderValidationError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'OrderValidationError';
+  }
 }
 
 // ============ CATEGORIES ============
@@ -237,31 +199,49 @@ export async function createOrder(input: {
   discount: number;
 }): Promise<Order> {
   return await prisma.$transaction(async (tx) => {
-    let subtotal = 0;
-    for (const item of input.items) {
-      subtotal += item.quantity * item.unitPrice;
-      
-      await tx.product.update({
-        where: { id: item.productId },
-        data: { stock: { decrement: item.quantity } }
-      });
+    if (!Array.isArray(input.items) || input.items.length === 0) {
+      throw new OrderValidationError('At least one product is required');
     }
-    
-    const total = subtotal - input.discount;
+
+    let subtotal = 0;
+    const orderItems: { productId: string; quantity: number; unitPrice: number; total: number }[] = [];
+    for (const item of input.items) {
+      if (!item.productId || !Number.isInteger(item.quantity) || item.quantity <= 0) {
+        throw new OrderValidationError('Product quantities must be positive whole numbers');
+      }
+
+      const product = await tx.product.findUnique({ where: { id: item.productId } });
+      if (!product || !product.active) {
+        throw new OrderValidationError('One or more products are unavailable');
+      }
+
+      const updated = await tx.product.updateMany({
+        where: { id: product.id, active: true, stock: { gte: item.quantity } },
+        data: { stock: { decrement: item.quantity } },
+      });
+      if (updated.count !== 1) {
+        throw new OrderValidationError(`${product.name} does not have enough stock`);
+      }
+
+      const total = item.quantity * product.price;
+      subtotal += total;
+      orderItems.push({ productId: product.id, quantity: item.quantity, unitPrice: product.price, total });
+    }
+
+    const discount = Number(input.discount ?? 0);
+    if (!Number.isFinite(discount) || discount < 0 || discount > subtotal) {
+      throw new OrderValidationError('Discount must be between zero and the subtotal');
+    }
+    const total = subtotal - discount;
     
     const order = await tx.order.create({
       data: {
         customerId: input.customerId,
         subtotal,
-        discount: input.discount,
+        discount,
         total,
         items: {
-          create: input.items.map(item => ({
-            productId: item.productId,
-            quantity: item.quantity,
-            unitPrice: item.unitPrice,
-            total: item.quantity * item.unitPrice
-          }))
+          create: orderItems
         }
       },
       include: {

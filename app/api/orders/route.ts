@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getOrders, createOrder } from '@/lib/db';
+import { getOrders, createOrder, OrderValidationError } from '@/lib/db';
 
 export async function GET() {
   try {
@@ -16,6 +16,7 @@ export async function POST(req: NextRequest) {
     const data = await createOrder(body);
     return NextResponse.json(data);
   } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    const status = error instanceof OrderValidationError ? 400 : 500;
+    return NextResponse.json({ error: error.message }, { status });
   }
 }

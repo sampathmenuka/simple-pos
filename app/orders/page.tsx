@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { useOrders } from '@/lib/api/hooks';
 import { formatCurrency, formatDate } from '@/lib/utils-pos';
@@ -63,4 +63,3 @@ export default function OrdersPage() {
     </div>
   );
 }
-import React from 'react';

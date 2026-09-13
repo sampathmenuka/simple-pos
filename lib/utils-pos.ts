@@ -1,8 +1,7 @@
-// Currency formatter
-const CURRENCY_FORMATTER = new Intl.NumberFormat('en-LK', {
+// Currency formatter (US Dollar)
+const CURRENCY_FORMATTER = new Intl.NumberFormat('en-US', {
   style: 'currency',
-  currency: 'LKR',
-  currencyDisplay: 'narrowSymbol',
+  currency: 'USD',
   minimumFractionDigits: 2,
   maximumFractionDigits: 2,
 });
@@ -52,8 +51,8 @@ export interface OrderItem {
 
 export interface Order {
   id: number;
-  customer_id?: number;
-  customer_name?: string;
+  customer_id?: number | null;
+  customer_name?: string | null;
   total_amount: number;
   discount_amount: number;
   status: string;
@@ -64,8 +63,8 @@ export interface Order {
 export interface Customer {
   id: number;
   name: string;
-  email: string;
-  phone: string;
+  email: string | null;
+  phone: string | null;
   created_at: string;
   active: boolean;
 }
