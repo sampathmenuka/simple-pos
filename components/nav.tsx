@@ -128,7 +128,7 @@ export function Navigation() {
           </Button>
 
           {/* User Badge */}
-          <div className="hidden sm:flex items-center gap-2 px-2.5 py-1 rounded-xl bg-slate-100/70 dark:bg-zinc-900 border border-border/60">
+          <div className="hidden sm:flex items-center gap-2 px-2.5 py-1 rounded-xl bg-muted/60 border border-border">
             <div className="w-6 h-6 rounded-full bg-blue-600/15 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xs font-bold uppercase">
               {mounted ? (userName.charAt(0) || 'A') : 'A'}
             </div>
