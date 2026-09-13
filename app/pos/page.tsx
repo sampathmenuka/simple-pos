@@ -167,7 +167,7 @@ export default function POSPage() {
   const handleCheckout = () => {
     if (cart.length === 0) return toast.error('Your cart is empty');
 
-    const customerIdNum = selectedCustomerId === 'walk-in' ? null : Number(selectedCustomerId);
+    const customerIdNum = selectedCustomerId === 'walk-in' ? undefined : Number(selectedCustomerId);
 
     const payload = {
       customerId: customerIdNum,

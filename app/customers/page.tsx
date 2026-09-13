@@ -58,11 +58,11 @@ export default function CustomersPage() {
                 {filtered.map(c => (
                   <tr key={c.id} className="border-b">
                     <td className="py-2">{c.name}</td>
-                    <td>{c.email}</td>
-                    <td>{c.phone}</td>
+                    <td>{c.email || '—'}</td>
+                    <td>{c.phone || '—'}</td>
                     <td><Switch checked={c.active} onCheckedChange={active => toggleActive({ id: c.id, active })} /></td>
                     <td className="flex gap-2 py-2">
-                      <Button variant="outline" size="sm" onClick={() => { setEditingId(c.id); setFormData({name: c.name, email: c.email, phone: c.phone}); setShowForm(true); }}>Edit</Button>
+                      <Button variant="outline" size="sm" onClick={() => { setEditingId(c.id); setFormData({name: c.name, email: c.email || '', phone: c.phone || ''}); setShowForm(true); }}>Edit</Button>
                       <Button variant="destructive" size="sm" onClick={() => deleteCustomer(c.id)}>Delete</Button>
                     </td>
                   </tr>
