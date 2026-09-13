@@ -66,9 +66,9 @@ export default function ProductsPage() {
               <Input placeholder="Name" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} />
               <Input type="number" placeholder="Price" value={formData.price} onChange={e => setFormData({...formData, price: e.target.value})} />
               <Input type="number" placeholder="Stock" value={formData.stock} onChange={e => setFormData({...formData, stock: e.target.value})} />
-              <select className="border rounded p-2" value={formData.categoryId} onChange={e => setFormData({...formData, categoryId: e.target.value})}>
-                <option value="">Select Category</option>
-                {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+              <select className="border border-border bg-background text-foreground rounded-xl p-2 text-sm" value={formData.categoryId} onChange={e => setFormData({...formData, categoryId: e.target.value})}>
+                <option value="" className="bg-background text-foreground">Select Category</option>
+                {categories.map(c => <option key={c.id} value={c.id} className="bg-background text-foreground">{c.name}</option>)}
               </select>
             </div>
             <Input placeholder="Description" value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} />
